@@ -1,0 +1,110 @@
+import { Meta } from "@storybook/addon-docs";
+
+<Meta title="How to use Design Tokens" />
+
+# How to use Design Tokens
+
+The most fundamental parts of a design system are the so-called design tokens.
+They are the colors, spacings and other styles we restrict ourselves to use that make out the look and feel of the design system.
+
+With Chakra we can easily define a set of design tokens that can then be used in all our components.
+It even comes with a [default theme](https://chakra-ui.com/docs/theming/theme) which we have overwritten with the Volocopter design tokens.
+
+## Using Design Tokens
+
+It's straightforward that you are able to use the `colors` design tokens for the `color` property.
+For everything else, you can take a look at this [overview of the style props](https://chakra-ui.com/docs/features/style-props).
+It maps each Chakra component prop to the CSS property used under the hood and the theme key it references.
+
+## Modifying Design Tokens
+
+Please be aware that adding a design token is easy, but removing it again is very hard.
+If you have to remove a design token, make sure that it is not used anywhere in the design system library and in all packages that use it.
+
+## Generating Token Typings
+
+In order to have TypeScript support for our styles, we can (and should) generate the token typings for our Chakra theme.
+This usually happens automatically in the postinstall-script of the design system.
+If token names have changed, tokens were added or removed, you need to regenerate the types to get proper TypeScript support.
+For this you can run `yarn gen:theme-typings` directly.
+
+## What Design Tokens are there?
+
+Below you'll find a list of the design tokens defined and hints how to use them.
+
+### Breakpoints
+
+Instead of mediaQueries, we can provide object values to specify breakpoints,
+as described in the [Chakra Documentation: Responsive Styles](https://chakra-ui.com/docs/features/responsive-styles).
+Please prefer the object notation over the array notation because it is more readable and robust.
+E.g. to change the fontSize depending on the screen size, you can write
+
+```tsx
+// e.g. src/theme/components/Component.ts
+const styles = (props: ChakraProps) => {
+    fontSize: { base: "sm", lg: "md" },
+}
+
+// e.g. src/components/Component.tsx
+<Text fontSize={{ base: "sm", lg: "md" }}>some text</Text>
+```
+
+which sets the default fontSize to `sm` but uses `md` for screensizes of size `lg` and bigger.
+Check out the [Breakpoints story](?path=/story/design-tokens-breakpoints--overview) to learn how to configure the preview size in storybook.
+
+### Colors
+
+These colors can be referenced by the `color`, `borderColor`, `backgroundColor`, `fill` and `stroke` properties,
+see [Chakra Style Props: Color and background Color](https://chakra-ui.com/docs/features/style-props#color-and-background-color).
+You can use the colors shown in these stories to style your components:
+
+-   [Brand Colors](/?path=/story/design-tokens-colors--brand-colors) - The Volocopter blues
+-   [Monochrome](/?path=/story/design-tokens-colors--monochrome) - basic black, white and gray
+-   [Signal Colors](/?path=/story/design-tokens-colors--signal-colors) - for highlighting error, warning and success events
+-   [Differentiating Colors](/?path=/story/design-tokens-colors--differentiating-colors) - e.g. for graphs
+-   [Colors with Transparencies](/?path=/story/design-tokens-colors--colors-with-transparencies) - colors with alpha values
+
+#### Theming
+
+Providing our UIs in dark and light mode is an important UX requirement, so whenever you use colors, make sure to consider both color modes.
+You can switch between a light-mode-color and a dark-mode-color by using the `mode` utility from `@chakra-ui/theme-tools` in the component's theme style file
+or the [useColorModeValue](https://chakra-ui.com/docs/features/color-mode#usecolormodevalue) hook directly in the component:
+
+```tsx
+// e.g. src/theme/components/Component.ts
+const styles = {
+    color: mode("blue.500", "white")(props),
+};
+
+// e.g. src/components/Component.tsx
+const color = useColorModeValue("blue.500", "white");
+```
+
+### Border Radii
+
+Can be referenced by any prop with `radius` in it, see [Chakra Style Props: Border Radius](https://chakra-ui.com/docs/features/style-props#border-radius).
+
+Check out the [Border radius story](?path=/story/design-tokens-border-radius--overview) to see our border radius tokens.
+
+### Shadows
+
+Can be referenced by the `textShadow`, `shadow`, and `boxShadow` properties, see [Chakra Style Props: Shadow](https://chakra-ui.com/docs/features/style-props#shadow).
+
+Check out the [Shadows story](?path=/story/design-tokens-shadows--overview) to see our shadow tokens.
+
+### Typography
+
+The typography design tokens are comprised of tokens for `fontFamily`, `letterSpacing`, `lineHeight`, `fontWeight` and `fontSize`,
+see [Chakra Style Props: Typography](https://chakra-ui.com/docs/features/style-props#typography).
+
+You can view our typography tokens in their respective stories:
+
+-   [Fonts](?path=/story/design-tokens-typography--fonts) - the font faces
+-   [Letter Spacings](?path=/story/design-tokens-typography--letter-spacings) - amount of space between each letter
+-   [Line Heights](?path=/story/design-tokens-typography--line-heights) - the amount of space above and below inline elements
+-   [Font Weights](?path=/story/design-tokens-typography--font-weights) - weight/thickness of the font
+-   [Font Sizes](?path=/story/design-tokens-typography--font-sizes) - size/height of the font
+
+The `<Heading>` and `<Text>` components are already configured to use the tokens according to their specifications.
+Normally, you should not use these tokens directly outside the Design System library, but use a predefined `<Text>` variant.
+If you notice a missing variant, please add it!
