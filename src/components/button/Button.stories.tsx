@@ -40,8 +40,6 @@ export default meta;
 
 export const Basic: StoryFn<ButtonProps> = (props) => <Button {...props} />;
 
-export const WithIcon: StoryFn<ButtonProps> = (props) => <Button {...props} rightIcon={plusIcon} />;
-
 export const ButtonVariants: StoryFn<ButtonProps> = (props) => (
     <div>
         <HStack alignItems="center" justifyContent="center" m={5}>
@@ -51,6 +49,11 @@ export const ButtonVariants: StoryFn<ButtonProps> = (props) => (
                 </HStack>
             ))}
         </HStack>
+    </div>
+);
+
+export const ButtonVariantsDisabled: StoryFn<ButtonProps> = (props) => (
+    <div>
         <HStack alignItems="center" justifyContent="center" m={5}>
             {variantArray.map((variant, index) => (
                 <HStack key={+index} spacing={1} p="2">
@@ -61,7 +64,7 @@ export const ButtonVariants: StoryFn<ButtonProps> = (props) => (
     </div>
 );
 
-export const ButtonWithIcon: StoryFn<ButtonProps> = (props) => (
+export const ButtonVariantsWithIcon: StoryFn<ButtonProps> = (props) => (
     <div>
         <HStack alignItems="center" justifyContent="center" m={5}>
             {variantArray.map((variant, index) => (

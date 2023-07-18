@@ -37,7 +37,7 @@ describe("Button", () => {
     });
 
     it("should forward the ref correctly", () => {
-        const ref = React.createRef();
+        const ref = React.createRef<HTMLButtonElement>();
         render(<Button ref={ref}>Click me</Button>);
         const buttonElement = screen.getByText("Click me");
         expect(ref.current).toBe(buttonElement);
